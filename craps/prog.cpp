@@ -8,7 +8,7 @@ using namespace std;
 /* Author:	Matt W. Martin, 4374851
  *		kaethis@tasmantis.net
  *
- * Project:	CS2010, Lab Assignment #3
+ * Project:	CS2010, Lab #3
  *		Part I: CRAPS! CRAPS! CRAPS! */ 
 
 int Die(){
@@ -175,13 +175,35 @@ void DiceDrawer(int die1_val, int die2_val){
 	cout << endl;
 }
 
-void CrapsGame(){
+void CrapsInstructions(){
+	// If called upon, this method prints out the instructions of the game.
 	
+	cout << endl;
+	cout << "  > You, the player, roll two six-sided   " << endl;
+	cout << "    dice.                                 " << endl;
+	cout << "  > If the sum of the dice is SEVEN or    " << endl;
+	cout << "    ELEVEN on the first roll, the player  " << endl;
+	cout << "    wins.                                 " << endl;
+	cout << "  > If the sum is TWO, THREE or TWELVE on " << endl;
+	cout << "    the first roll, the player loses.     " << endl;
+	cout << "  > If the sum is ANY OTHER NUMBER on the " << endl;
+	cout << "    first roll, that becomes the player's " << endl;
+	cout << "    P O I N T.                            " << endl;
+	cout << "  > To win, the player must continue      " << endl;
+	cout << "    rolling until the P O I N T is made.  " << endl;
+	cout << "  > The player loses by rolling a SEVEN   " << endl;
+	cout << "    before making his/her P O I N T.      " << endl;
+	cout << endl;	
+}
+
+void CrapsGame(){
+	/* This method is essentially the "heart" of the program; its what simulates
+	 * the game of Craps. */
+
 	int die1_val, 
 	    die2_val,
 	    roll_val,		// Combined value of both dice.
-	    point_val,
-	    roll_count;		// Total number of rolls.
+	    point_val;
 	
 	char roll_input;	// User input for roll action.
 
@@ -191,7 +213,6 @@ void CrapsGame(){
 	Roll(die1_val, die2_val);
 	roll_val = (die1_val + die2_val);
 
-	roll_count = 1;
 	cout << "------------------------------------------" << endl;
 	cout << "            F I R S T  R O L L            " << endl;
 	cout << "------------------------------------------" << endl;
@@ -210,9 +231,10 @@ void CrapsGame(){
  
 	DiceDrawer(die1_val, die2_val);
 	
-	cout << " You roll a";	/* The following switch prints the appropriate
-				 * word for the value of roll_val. */
-	switch(roll_val){
+	cout << " You roll a";
+		
+	switch(roll_val){ 	/* The following switch prints the appropriate word
+				 *  for the value of roll_val. */
 
 		case 2:		cout << " TWO";
 				break;
@@ -248,40 +270,41 @@ void CrapsGame(){
 				break;
 	}
 	cout << "!" << endl;
+	
+	switch(roll_val){ 	/* This switch determines the outcome of the first
+				 * roll. */ 
 
-	switch(roll_val){
-
-		case 2:		lose_flag = true;	// Player loses.
+		case 2:		lose_flag = true;
 				break;
 
-		case 3:		lose_flag = true;	// Player loses.
+		case 3:		lose_flag = true;
 				break;
 	
-		case 4:		point_val = roll_val;	// Point is 4.
+		case 4:		point_val = roll_val;
 				break;	
 
-		case 5:		point_val = roll_val;	// Point is 5.
+		case 5:		point_val = roll_val;
 				break;
 
-		case 6:		point_val = roll_val;	// Point is 6.
+		case 6:		point_val = roll_val;
 				break;
 				
-		case 7: 	win_flag = true;	// Player wins.
+		case 7: 	win_flag = true;
 				break;
 
-		case 8:		point_val = roll_val;	// Point is 8.
+		case 8:		point_val = roll_val;
 				break;
 
-		case 9:		point_val = roll_val;	// Point is 9.
+		case 9:		point_val = roll_val;
 				break;
 
-		case 10:	point_val = roll_val;	// Point is 10.
+		case 10:	point_val = roll_val;
 				break;
 	
-		case 11:	win_flag = true;	// Player wins.
+		case 11:	win_flag = true;
 				break;
 
-		case 12:	lose_flag = true;	// Player loses.
+		case 12:	lose_flag = true;
 				break;
 	}
 	
@@ -290,14 +313,50 @@ void CrapsGame(){
 	else if(lose_flag)
 		goto Lose_Scenario;
 	else{
-		do{
+		do{	/* If a point is chosen in the first round, the player must
+			 * now keep rolling until he/she "makes the point." */
 
 			Roll(die1_val, die2_val);
 			roll_val = (die1_val + die2_val);
 
-			roll_count++;
 			cout << "------------------------------------------" << endl;
-			cout << " P O I N T: " << point_val << endl;
+			cout << " P O I N T: ";
+			switch(point_val){ 
+
+				case 2:		cout << "TWO";
+						break;
+
+				case 3:		cout << "THREE";
+						break;
+	
+				case 4:		cout << "FOUR";
+						break;
+
+				case 5:		cout << "FIVE";
+						break;
+
+				case 6:		cout << "SIX";
+						break;
+
+				case 7:		cout << "SEVEN";
+						break;
+
+				case 8:		cout << "EIGHT";
+						break;
+
+				case 9:		cout << "NINE";
+						break;
+
+				case 10:	cout << "TEN";
+						break;
+	
+				case 11:	cout << "ELEVEN";
+						break;
+
+				case 12:	cout << "TWELVE";
+						break;
+			}
+			cout << endl;
 			cout << "------------------------------------------" << endl;
 
 			cout << "        ENTER 'R' TO ROLL AGAIN : ";
@@ -390,6 +449,10 @@ void CrapsGame(){
 
 int main(){
 
+	char input;	// User input character.
+	
+	srand(time(NULL));
+
 	cout << "------------------------------------------" << endl;
 	cout << "      ____ ____      _    ____  ____      " << endl;
  	cout << "     / ___|  _ \\    / \\  |  _ \\/ ___|     " << endl;
@@ -397,18 +460,27 @@ int main(){
  	cout << "    | |___|  _ <  / ___ \\|  __/ ___) |    " << endl;
  	cout << "     \\____|_| \\_\\/_/   \\_\\_|   |____/     " << endl;
 	cout << "                                          " << endl;
-	cout << "------------------------------------------" << endl;
+	cout << "----------------------------------VER 1.0-" << endl;
+
+	cout << " NEED INSTRUCTIONS? (Y/N) : ";
 	
-	srand(time(NULL));
-	
+	Input_Start0:
+		cin >> input;
+		if((input == 'Y') || (input == 'y'))
+			CrapsInstructions();
+		else if((input == 'N') || (input == 'n'))
+			;
+		else{
+			cout << "                            ";
+			goto Input_Start0;
+		}
 	do{
-		char input;	// User input character.
 
 		CrapsGame();
 
 		cout << " PLAY AGAIN? (Y/N) : ";
 		
-		Input_Start:
+		Input_Start1:
 			cin >> input;
 			if((input == 'Y') || (input == 'y'))
 				;
@@ -416,7 +488,7 @@ int main(){
 				break;
 			else{
 				cout << "                     ";
-				goto Input_Start;
+				goto Input_Start1;
 			}	
 	
 	}while(true);
@@ -424,8 +496,8 @@ int main(){
 	cout << "------------------------------------------" << endl; 
 	cout << "  T H A N K S   F O R   P L A Y I N G  !  " << endl;
 	cout << "------------------------------------------" << endl; 
-	cout << "    Need to report a bug?  Contact me!    " << endl;
-	cout << "              -  kaethis@tasmantis.net	   " << endl;
+	cout << "     Encountered a bug?  Let me know!     " << endl;
+	cout << "             -  kaethis@tasmantis.net	   " << endl;
 	cout << endl;
 
 	return 0;
